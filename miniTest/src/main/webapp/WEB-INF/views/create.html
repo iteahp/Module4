@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="post" th:object="${staff}" >
+    <table border="1px solid" style="border-collapse: collapse">
+        <td><input th:field="${staff.code}" placeholder="Employee Code" type="text"></td>
+        <td><input th:field="${staff.name}" placeholder="Name" type="text"></td>
+        <td><input th:field="${staff.age}" placeholder="Age" type="number"></td>
+        <td><input th:field="${staff.salary}" placeholder="Salary" type="number"></td>
+        <td>
+            <select name="idBranch">
+                <option th:each="b:${branch}" th:text="${b.name}" th:value="${b.id}"></option>
+            </select>
+        </td>
+    </table>
+    <button type="submit">Create</button>
+</form>
+</body>
+</html>
