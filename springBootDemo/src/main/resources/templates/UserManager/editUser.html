@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="post" th:object="${user}" enctype="multipart/form-data">
+    <table border="1px solid" style="border-collapse: collapse" >
+        <tr>
+            <th>User Name</th>
+            <th>Password</th>
+            <th>Full Name</th>
+            <th>Phone Number</th>
+            <th>Email</th>
+            <th>Avatar</th>
+        </tr>
+        <tr>
+            <td><input th:field="*{userName}" th:value="*{userName}" type="text"></td>
+            <td><input th:field="*{password}" th:value="*{password}" type="text"></td>
+            <td><input th:field="*{fullName}" th:value="*{fullName}" type="text"></td>
+            <td><input th:field="*{phone}" th:value="*{phone}" type="text"></td>
+            <td><input th:field="*{email}" th:value="*{email}" type="text"></td>
+            <td><input name="upImg" type="file"></td>
+            <td><input th:field="*{avatar}" th:value="*{avatar}" type="text" hidden></td>
+            <!--            <td><input name="upAvatar"  type="file"></td>-->
+
+            <td>
+                <select th:field="*{role}">
+                    <option th:each="r:${roleList}" th:text="${r.name}" th:value="${r.id}"></option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td style="color: red" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}"></td>
+            <td style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></td>
+            <td style="color: red" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></td>
+            <td style="color: red" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></td>
+            <td style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></td>
+            <td style="color: red" th:if="${#fields.hasErrors('avatar')}" th:errors="*{avatar}"></td>
+        </tr>
+    </table>
+    <button type="submit" style="color: chocolate"  >Edit</button>
+</form>
+</body>
+</html>

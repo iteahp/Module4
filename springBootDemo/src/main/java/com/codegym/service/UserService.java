@@ -3,6 +3,8 @@ package com.codegym.service;
 import com.codegym.model.User;
 import com.codegym.repository.IUserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,11 @@ public class UserService implements IUserImpl{
     }
 
     @Override
+    public Page<User> findAll(Pageable pageable) {
+        return iUserRepo.findAll(pageable);
+    }
+
+    @Override
     public void save(User user) {
         iUserRepo.save(user);
     }
@@ -30,5 +37,10 @@ public class UserService implements IUserImpl{
     @Override
     public User findById(long id) {
         return iUserRepo.findById(id).get();
+    }
+
+    @Override
+    public List<User> findAllByFullNameContains(String name) {
+        return iUserRepo.findAllByFullNameContains(name);
     }
 }
