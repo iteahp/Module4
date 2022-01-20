@@ -8,15 +8,31 @@
 <body>
 <form method="post" th:object="${staff}" >
     <table border="1px solid" style="border-collapse: collapse">
+        <tr>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Salary</th>
+            <th>Branch</th>
+        </tr>
+        <tr>
         <td><input th:field="${staff.code}" placeholder="Employee Code" type="text"></td>
         <td><input th:field="${staff.name}" placeholder="Name" type="text"></td>
         <td><input th:field="${staff.age}" placeholder="Age" type="number"></td>
         <td><input th:field="${staff.salary}" placeholder="Salary" type="number"></td>
         <td>
-            <select name="idBranch">
+            <select th:field="${staff.branch}">
                 <option th:each="b:${branch}" th:text="${b.name}" th:value="${b.id}"></option>
             </select>
         </td>
+        </tr>
+        <tr>
+            <td style="color: red" th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></td>
+            <td style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></td>
+            <td style="color: red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></td>
+            <td style="color: red" th:if="${#fields.hasErrors('salary')}" th:errors="*{salary}"></td>
+            <td style="color: red" th:if="${#fields.hasErrors('branch')}" th:errors="*{branch}"></td>
+        </tr>
     </table>
     <button type="submit">Create</button>
 </form>

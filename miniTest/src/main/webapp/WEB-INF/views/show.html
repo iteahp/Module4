@@ -14,6 +14,10 @@
 <div class="container">
     <h2>Staff Management</h2>
     <br>
+    <form action="/findByName">
+        <input type="text" name="nameFind">
+        <button type="submit">Search</button>
+    </form>
     <br>
     <a href="/create"> <button type="button" class="btn btn-success">Add New</button></a>
     <a href="/sort"> <button type="button" class="btn btn-primary">Sort By Age</button></a>
@@ -43,6 +47,9 @@
         </tr>
         </tbody>
     </table>
+    <button th:if="${staffs.hasPrevious()}"><a  th:href="@{/staffs(page=${staffs.number}-1)}">back</a></button>
+    <span th:text="${staffs.number+1}"></span>/ <span th:text="${staffs.totalPages}"></span>
+    <button th:if="${staffs.hasNext()}"><a  th:href="@{/staffs(page=${staffs.number}+1)}">next</a></button>
 </div>
 
 </body>

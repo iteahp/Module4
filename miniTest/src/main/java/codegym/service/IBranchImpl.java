@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface IBranchImpl {
     List<Branch> findALl();
-
+    Branch findById(long id);
 }

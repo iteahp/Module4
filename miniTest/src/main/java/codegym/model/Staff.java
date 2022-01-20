@@ -1,6 +1,8 @@
 package codegym.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
+
 
 
 @Entity
@@ -9,11 +11,17 @@ public class Staff {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
+    @Pattern(regexp = "^[A-Za-z0-9 ]{5,10}$",message = " Code : 5-10 char a-z A-Z 0-9")
     private String code;
+    @Pattern(regexp = "^[A-Za-z ]{5,10}$",message = " Name : 4-10 char a-z A-Z ")
     private String name;
+
+    @Min(value = 18,message = " Age :min = 18")
+    @Max(value = 60,message = "Age  : max = 60")
     private int age;
     private double salary;
     @ManyToOne
+    @NotBlank(message = "not Blank")
     private Branch branch;
     public Staff() {
     }
