@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Bootstrap Example</title>
+  <title>Bán điện thoại</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
@@ -125,25 +125,13 @@ Create  </button>
 </body>
 </html>
 <script>
-  function show(){
+  function show(page){
     $.ajax({
       type:"GET",
       url: "http://localhost:8080/products",
-      success: function (data){
-        let str = "";
-        for (let i = 0; i < data.length; i++) {
-          str +="<tr>"
-          str+= `<td>${data[i].id}</td>`
-          str+= `<td>${data[i].name}</td>`
-          str+= `<td>${data[i].price}</td>`
-          str+= `<td><img src="${data[i].img}" alt="Not Found IMG" height="200" width="250"></td>`
-          str+= `<td>${data[i].category.name}</td>`
+      success: function (data,page){
+        showList(data)
 
-          str+= `<td><button class="btn btn-danger" onclick="deleteProduct(${data[i].id})">Delete</button></td>`
-          str+= `<td><button class="btn btn-warning" onclick="showFormEdit(${data[i].id})" data-toggle="modal" data-target="#editProduct">Edit</button></td>`
-          str +="</tr>"
-        }
-        document.getElementById("showProduct").innerHTML = str;
       },
       error: function (err) {
         console.log(err)
@@ -151,6 +139,25 @@ Create  </button>
     })
   }
   show();
+  function showList(pageData,pageNumber){
+    let data = pageData
+    let str = "";
+    for (let i = 0; i < data.length; i++) {
+      str +="<tr>"
+      str+= `<td>${data[i].id}</td>`
+      str+= `<td>${data[i].name}</td>`
+      str+= `<td>${data[i].price}</td>`
+      str+= `<td><img src="${data[i].img}" alt="Not Found IMG" height="200" width="250"></td>`
+      str+= `<td>${data[i].category.name}</td>`
+      str+= `<td><button class="btn btn-danger" onclick="deleteProduct(${data[i].id})">Delete</button></td>`
+      str+= `<td><button class="btn btn-warning" onclick="showFormEdit(${data[i].id})" data-toggle="modal" data-target="#editProduct">Edit</button></td>`
+      str +="</tr>"
+    }
+   // str+= `<button onclick="show(pageNumber-1)">Back</button>`
+   //
+   //  str+=      `<button onclick="show(pageNumber+1)"> Next</button>`
+    document.getElementById("showProduct").innerHTML = str;
+  }
   function create(){
     let name = document.getElementById("name").value;
     let img = document.getElementById("img").value;

@@ -44,7 +44,7 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView("/UserManager/createUser");
         return modelAndView;
     }
-    @PostMapping("create")
+    @PostMapping("/create")
     public String create(@Valid  @ModelAttribute(value = "user") User user, BindingResult bindingResult, @RequestParam("upImg")MultipartFile upImg){
         nameAndEmailValidation.validate(user,bindingResult);
         if (bindingResult.hasFieldErrors()){

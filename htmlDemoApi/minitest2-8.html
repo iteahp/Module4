@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <h2 ><a href="aloo.html?page=2">lay link</a></h2>
+    <h2><a href="minitest2-8.html">Student Manager</a></h2>
+    <div class="container">
+        <input type="text" id="search">
+        <button type="button" class="btn btn-success" onclick="findAllByName(0)" >
+            Search
+        </button>
+        <br>
+        <!-- Button to Open the Modal -->
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModalcreate">
+           Create
+        </button>
+
+        <!-- The Modal -->
+        <div class="modal" id="myModalcreate">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Create Form</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <form action="" id="formCreate">
+                            <div class="form-group">
+                                <label >Name</label>
+                                <input type="text" class="form-control" placeholder="Enter Name" id="nameCreate">
+                            </div>
+                            <div class="form-group">
+                                <label >Date Of Birth</label>
+                                <input type="date" class="form-control"  id="dateBirthCreate">
+                            </div>
+                            <div class="form-group">
+                                <label >Address</label>
+                                <input type="text" class="form-control"  id="addressCreate">
+                            </div>
+                            <div class="form-group">
+                                <label >Phone Number</label>
+                                <input type="number" class="form-control"  id="phoneNumberCreate">
+                            </div>
+                            <div class="form-group">
+                                <label >Email</label>
+                                <input type="email" class="form-control"  id="emailCreate">
+                            </div>
+                            <div class="form-group">
+                                <label >ClassRoom</label>
+                                <select name="" id="classRoomCreate">
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-success" onclick="create()">Create</button>
+                        </form>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+  <!-- The Modal Edit -->
+        <div class="modal" id="myModalEdit">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Create Form</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <form action="" id="formEdit">
+                            <div class="form-group">
+                                <label >Name</label>
+                                <input type="text" class="form-control" placeholder="Enter Name" id="nameEdit">
+                            </div>
+                            <div class="form-group">
+                                <label >Date Of Birth</label>
+                                <input type="date" class="form-control"  id="dateBirthEdit">
+                            </div>
+                            <div class="form-group">
+                                <label >Address</label>
+                                <input type="text" class="form-control"  id="addressEdit">
+                            </div>
+                            <div class="form-group">
+                                <label >Phone Number</label>
+                                <input type="number" class="form-control"  id="phoneNumberEdit">
+                            </div>
+                            <div class="form-group">
+                                <label >Email</label>
+                                <input type="email" class="form-control"  id="emailEdit">
+                            </div>
+                            <div class="form-group">
+                                <label >ClassRoom</label>
+                                <select name="" id="classRoomEdit">
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-success" onclick="edit()">Edit</button>
+                        </form>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Date of Birth</th>
+            <th>Address</th>
+            <th>PhoneNumber</th>
+            <th>Email</th>
+            <th>ClassRoom</th>
+            <th colspan="2">Action</th>
+        </tr>
+        </thead>
+        <tbody id="tbody">
+
+        </tbody>
+    </table>
+</div>
+</body>
+<script>
+    function showClassRoom(){
+        $.ajax({
+            type : "GET",
+            url : "http://localhost:8081/classrooms",
+            success:function (data){
+                let str = "";
+                for (let i = 0; i < data.length; i++) {
+                    str += `<option value="${data[i].id}">${data[i].name}</option>`
+                }
+                document.getElementById("classRoomCreate").innerHTML = str;
+                document.getElementById("classRoomEdit").innerHTML = str;
+            }
+
+        })
+    }
+    // showClassRoom();
+
+    function create(){
+        let name = document.getElementById("nameCreate").value;
+        let dateBirth = document.getElementById("dateBirthCreate").value;
+        let address = document.getElementById("addressCreate").value;
+        let phoneNumber = document.getElementById("phoneNumberCreate").value;
+        let email = document.getElementById("emailCreate").value;
+        let classRoom = document.getElementById("classRoomCreate").value;
+
+        let product = {
+            name: name,
+            dateBirth : dateBirth,
+            address : address,
+            phoneNumber :phoneNumber,
+            email : email,
+            classRoom : {id:classRoom}
+        }
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8081/students",
+            data : JSON.stringify(product),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            success : function (){
+                show(0)
+            }
+        })
+    }
+    function show(page){
+        $.ajax({
+            type : "GET",
+            url : "http://localhost:8081/students?page="+page,
+            success: function (data){
+             print(data)
+            }
+        })
+    }
+    function showBySearch(page){
+
+    }
+
+    show(0);
+    function showFormEdit(id){
+        $.ajax({
+            type:"GET",
+            url:"http://localhost:8081/students/"+id,
+            success: function (data){
+                document.getElementById("nameEdit").value = data.name;
+                document.getElementById("dateBirthEdit").value = data.dateBirth;
+                document.getElementById("addressEdit").value = data.address ;
+                document.getElementById("phoneNumberEdit").value = data.phoneNumber;
+                document.getElementById("emailEdit").value = data.email;
+                document.getElementById("classRoomEdit").value = data.classRoom.id;
+            }
+        })
+    }
+    function print(data){
+        let  content = data.content;
+        let str  = "";
+        for (let i = 0; i < content.length; i++) {
+            str+=`<tr>`
+            str+=`<td>${content[i].name}</td>`
+            str+=`<td>${content[i].dateBirth}</td>`
+            str+=`<td>${content[i].address}</td>`
+            str+=`<td>${content[i].phoneNumber}</td>`
+            str+=`<td>${content[i].email}</td>`
+            str+=`<td>${content[i].classRoom.name}</td>`
+            str+=`<td><button type="button" class="btn btn-danger"onclick="deletee(${content[i].id})">Delete</button></td>`
+            str+=`<td><button type="button" class="btn btn-warning" onclick="showFormEdit(${content[i].id})" data-toggle="modal" data-target="#myModalEdit">Edit</button></td>`
+            str+=`</tr>`
+        }
+
+        let pageSizes = data.totalPages;
+        for (let i = 1; i <= pageSizes; i++) {
+            str+=`<button onclick="show(${i-1})">${i}</button>`
+        }
+        document.getElementById("tbody").innerHTML = str;
+    }
+
+    function edit(){
+        let name = document.getElementById("nameEdit").value;
+        let dateBirth = document.getElementById("dateBirthEdit").value;
+        let address = document.getElementById("addressEdit").value;
+        let phoneNumber = document.getElementById("phoneNumberEdit").value;
+        let email = document.getElementById("emailEdit").value;
+        let classRoom = document.getElementById("classRoomEdit").value;
+
+        let product = {
+            name: name,
+            dateBirth : dateBirth,
+            address : address,
+            phoneNumber :phoneNumber,
+            email : email,
+            classRoom : {id:classRoom}
+        }
+        $.ajax({
+            type: "PUT",
+            url: "http://localhost:8081/students",
+            data : JSON.stringify(product),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            success : function (){
+                show(0)
+            }
+        })
+    }
+    function deletee(id){
+        $.ajax({
+            type: "DELETE",
+            url: "http://localhost:8081/students/"+id,
+            success : function (){
+                show(0)
+            }
+        })
+    }
+    function findAllByName(page){
+       let nameFind = document.getElementById("search").value;
+       $.ajax({
+           type:"GET",
+           url: `http://localhost:8081/students/find?nameFind=${nameFind}&&page=${page}`,
+           success : function (data){
+               let  content = data.content;
+               let str  = "";
+               for (let i = 0; i < content.length; i++) {
+                   str+=`<tr>`
+                   str+=`<td>${content[i].name}</td>`
+                   str+=`<td>${content[i].dateBirth}</td>`
+                   str+=`<td>${content[i].address}</td>`
+                   str+=`<td>${content[i].phoneNumber}</td>`
+                   str+=`<td>${content[i].email}</td>`
+                   str+=`<td>${content[i].classRoom.name}</td>`
+                   str+=`<td><button type="button" class="btn btn-danger"onclick="deletee(${content[i].id})">Delete</button></td>`
+                   str+=`<td><button type="button" class="btn btn-warning" onclick="showFormEdit(${content[i].id})" data-toggle="modal" data-target="#myModalEdit">Edit</button></td>`
+                   str+=`</tr>`
+               }
+
+               let pageSizes = data.totalPages;
+               for (let i = 1; i <= pageSizes; i++) {
+                   str+=`<button onclick="findAllByName(${i-1})">${i}</button>`
+               }
+               document.getElementById("tbody").innerHTML = str;
+           }
+       })
+    }
+</script>
+</html>

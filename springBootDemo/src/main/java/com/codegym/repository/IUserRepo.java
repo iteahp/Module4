@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface IUserRepo extends PagingAndSortingRepository<User,Long> {
     List<User> findAllByFullNameContains(String name);
+    User findByUserName(String userName);
 }

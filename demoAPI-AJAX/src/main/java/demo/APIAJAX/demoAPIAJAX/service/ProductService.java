@@ -3,6 +3,8 @@ package demo.APIAJAX.demoAPIAJAX.service;
 import demo.APIAJAX.demoAPIAJAX.model.Product;
 import demo.APIAJAX.demoAPIAJAX.repository.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,6 +12,12 @@ import java.util.List;
 public class ProductService implements IProductImpl{
     @Autowired
     ProductRepo productRepo;
+
+    @Override
+    public Page<Product> findAll(Pageable pageable) {
+        return productRepo.findAll(pageable);
+    }
+
     @Override
     public List<Product> findAll() {
         return (List<Product>) productRepo.findAll();
