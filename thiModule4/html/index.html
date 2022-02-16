@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <h2 ><a href="aloo.html?page=2">lay link</a></h2>
+    <h2><a href="minitest2-8.html">Student Manager</a></h2>
+    <div class="container">
+        <input type="text" id="search">
+        <button type="button" class="btn btn-success" onclick="findAllByName(0)" >
+            Search
+        </button>
+        <br>
+        <!-- Button to Open the Modal -->
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModalcreate">
+            Create
+        </button>
+
+        <!-- The Modal -->
+        <div class="modal" id="myModalcreate">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Create Form</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                            <div class="form-group">
+                                <label >Name</label>
+                                <input type="text" class="form-control"  id="nameCreate">
+                            </div>
+                            <div class="form-group">
+                                <label >Quốc gia</label>
+                                <select name="" id="quocgiaCreate">
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label >Diện Tích</label>
+                                <input type="number" class="form-control"  id="dienTichCreate">
+                            </div>
+                            <div class="form-group">
+                                <label >Dân Số</label>
+                                <input type="number" class="form-control"  id="dansoCreate">
+                            </div>
+                            <div class="form-group">
+                                <label >GDP</label>
+                                <input type="number" class="form-control"  id="GDPCreate">
+                            </div>
+                            <div class="form-group">
+                                <label >Giới thiệu</label>
+                                <textarea name="" id="gioithieuCreate" cols="30" rows="10"></textarea>
+                            </div>
+                        <p style="color: red" id="errCreate"></p>
+                            <button  class="btn btn-success" onclick="create()">Create</button>
+
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- The Modal Edit -->
+        <div class="modal" id="myModalEdit">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Edit Form</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label >Id</label>
+                            <input type="text" class="form-control"  id="idEdit">
+                        </div>
+                            <div class="form-group">
+                                <label >Name</label>
+                                <input type="text" class="form-control"  id="nameEdit">
+                            </div>
+                            <div class="form-group">
+                                <label >Quốc gia</label>
+                                <select name="" id="quocgiaEdit">
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label >Diện Tích</label>
+                                <input type="number" class="form-control"  id="dienTichEdit">
+                            </div>
+                            <div class="form-group">
+                                <label >Dân Số</label>
+                                <input type="number" class="form-control"  id="dansoEdit">
+                            </div>
+                            <div class="form-group">
+                                <label >GDP</label>
+                                <input type="number" class="form-control"  id="GDPEdit">
+                            </div>
+                            <div class="form-group">
+                                <label >Giới thiệu</label>
+                                <textarea name="" id="gioithieuEdit" cols="30" rows="10"></textarea>
+                            </div>
+                            <p style="color: red" id="errEdit"></p>
+                            <button  class="btn btn-success" onclick="edit()">Edit</button>
+
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Thành Phố</th>
+            <th>Tên Quốc Gia</th>
+
+            <th colspan="2">Action</th>
+        </tr>
+        </thead>
+        <tbody id="tbody">
+
+        </tbody>
+    </table>
+</div>
+<!-- modal Confim -->
+<div class="container" id="strDeleteModal">
+    <!-- Modal -->
+
+
+</div>
+</body>
+<script>
+    function showClassRoom(){
+        $.ajax({
+            type : "GET",
+            url : "http://localhost:8080/quocgia",
+            success:function (data){
+                let str = "";
+                for (let i = 0; i < data.length; i++) {
+                    str += `<option value="${data[i].id}">${data[i].tenQuocGia}</option>`
+                }
+                document.getElementById("quocgiaCreate").innerHTML = str;
+                document.getElementById("quocgiaEdit").innerHTML = str;
+            }
+
+        })
+    }
+    showClassRoom();
+
+    function create(){
+        let name = document.getElementById("nameCreate").value;
+        let quocgia = document.getElementById("quocgiaCreate").value;
+        let dientich = document.getElementById("dienTichCreate").value;
+        let danso = document.getElementById("dansoCreate").value;
+        let gdp = document.getElementById("GDPCreate").value;
+        let gioithieu = document.getElementById("gioithieuCreate").value;
+
+        let product = {
+            name: name,
+            gioiThieu : gioithieu,
+            dienTich : dientich,
+            danSo :danso,
+            gdp : gdp,
+            quocGia : {id:quocgia}
+        }
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8080/cities",
+            data : JSON.stringify(product),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            success : function (){
+                show()
+            },
+            error:function (err){
+                document.getElementById("errCreate").innerText = "Create Fail"
+            }
+        })
+    }
+    function show(){
+        $.ajax({
+            type : "GET",
+            url : "http://localhost:8080/cities",
+            success: function (data){
+                print(data)
+            }
+        })
+    }
+    function showBySearch(page){
+
+    }
+
+    show();
+    function showFormEdit(id){
+        $.ajax({
+            type:"GET",
+            url:"http://localhost:8080/cities/"+id,
+            success: function (data){
+                document.getElementById("nameEdit").value = data.name;
+                document.getElementById("idEdit").value = data.id;
+                document.getElementById("dansoEdit").value = data.danSo;
+                document.getElementById("GDPEdit").value = data.gdp ;
+                document.getElementById("gioithieuEdit").value = data.gioiThieu;
+                document.getElementById("dienTichEdit").value = data.dienTich;
+                document.getElementById("quocgiaEdit").value = data.quocGia.id;
+            }
+        })
+    }
+    function print(content){
+        let str  = "";
+        for (let i = 0; i < content.length; i++) {
+            str+=`<tr>`
+            str+=`<td>${i+1}</td>`
+            str+=`<td><a href="detail.html?id=${content[i].id}">${content[i].name}</a></td>`
+            str+=`<td>${content[i].quocGia.tenQuocGia}</td>`
+            str+=`<td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" onclick="showFormDelete(${content[i].id})">Delete</button></td>`
+            str+=`<td><button type="button" class="btn btn-warning" onclick="showFormEdit(${content[i].id})" data-toggle="modal" data-target="#myModalEdit">Edit</button></td>`
+            str+=`</tr>`
+        }
+
+        document.getElementById("tbody").innerHTML = str;
+    }
+
+    function edit(){
+
+        let name = document.getElementById("nameEdit").value;
+        let id = document.getElementById("idEdit").value;
+        let quocgia = document.getElementById("quocgiaEdit").value;
+        let dientich = document.getElementById("dansoEdit").value;
+        let danso = document.getElementById("dansoEdit").value;
+        let gdp = document.getElementById("GDPEdit").value;
+        let gioithieu = document.getElementById("gioithieuEdit").value;
+
+        let product = {
+            id:id,
+            name: name,
+            gioiThieu : gioithieu,
+            dienTich : dientich,
+            danSo :danso,
+            gdp : gdp,
+            quocGia : {id:quocgia}
+        }
+        $.ajax({
+            type: "PUT",
+            url: "http://localhost:8080/cities",
+            data : JSON.stringify(product),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            success : function (){
+                show()
+            },
+            error:function (err){
+                document.getElementById("errEdit").innerText = "Edit Fail"
+            }
+        })
+    }
+    function deletee(id){
+        $.ajax({
+            type: "DELETE",
+            url: "http://localhost:8080/cities/"+id,
+            success : function (){
+                show()
+            }
+        })
+    }
+    function findAllByName(page){
+        let nameFind = document.getElementById("search").value;
+        $.ajax({
+            type:"GET",
+            url: `http://localhost:8081/students/find?nameFind=${nameFind}&&page=${page}`,
+            success : function (data){
+                let  content = data.content;
+                let str  = "";
+                for (let i = 0; i < content.length; i++) {
+                    str+=`<tr>`
+                    str+=`<td>${content[i].name}</td>`
+                    str+=`<td>${content[i].dateBirth}</td>`
+                    str+=`<td>${content[i].address}</td>`
+                    str+=`<td>${content[i].phoneNumber}</td>`
+                    str+=`<td>${content[i].email}</td>`
+                    str+=`<td>${content[i].classRoom.name}</td>`
+                    str+=`<td><button type="button" class="btn btn-danger"onclick="deletee(${content[i].id})">Delete</button></td>`
+                    str+=`<td><button type="button" class="btn btn-warning" onclick="showFormEdit(${content[i].id})" data-toggle="modal" data-target="#myModalEdit">Edit</button></td>`
+                    str+=`</tr>`
+                }
+
+                let pageSizes = data.totalPages;
+                for (let i = 1; i <= pageSizes; i++) {
+                    str+=`<button onclick="findAllByName(${i-1})">${i}</button>`
+                }
+                document.getElementById("tbody").innerHTML = str;
+            }
+        })
+    }
+    function showFormDelete(idDelete){
+        console.log(idDelete)
+        $.ajax({
+            type:"GET",
+            url:"http://localhost:8080/cities/"+idDelete,
+            success: function (data){
+                let str="";
+                str+=`<div class="modal fade" id="deleteModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="deleteTP"> Xóa thành phố ${data.name}</h4>
+                </div>
+                <div class="modal-body">
+                    <h1>Xóa thành phố</h1>
+                    <div id="confimDelete">Bạn có chắc chắn muốn xóa thành phố :  ${data.name}</div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="deletee(${data.id})" >Delete</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>`
+               document.getElementById("strDeleteModal").innerHTML = str;
+            }
+            ,error:function (err){
+                console.log(err)
+            }
+        })
+    }
+</script>
+</html>
